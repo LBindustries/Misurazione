@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!— Required meta tags —>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script>
+        window.onload = function () {
+        var options = {
+            animationEnabled: true,
+            zoomEnabled: true,
+            theme: "light2",
+            title:{
+                text: "Misurazioni"
+            },
+            axisX:{
+                valueFormatString: "DD MMM YYYY, HH:mm ",
+                crosshair: {
+              enabled: true,
+              snapToDataPoint: true
+                }
+            },
+            axisY: {
+                title: "Temperatura",
+                suffix: "°C",
+                minimum: -20,
+                valueFormatString: "#,##0"
+            },
+            toolTip:{
+                shared:true
+            },
+            legend:{
+                cursor:"pointer",
+                verticalAlign: "bottom",
+                horizontalAlign: "right",
+                dockInsidePlotArea: false,
+                itemclick: toogleDataSeries
+            },
+            data: [{
+                type: "line",
+                showInLegend: true,
+                name: "Temperatura",
+                markerType: "square",
+                xValueFormatString: "DD MMM YYYY, HH:mm:ss",
+                color: "#00f004",
+                yValueFormatString: "#,##0°C",
+                dataPoints: [
+                    {% for registrazione in registrazioni %}
+                        { x: new Date({{ registrazione.orario.year }}, {{ registrazione.orario.month }}, {{ registrazione.orario.day }}, {{ registrazione.orario.hour }}, {{ registrazione.orario.minute }}, {{ registrazione.orario.second }}), y: {{ registrazione.valore }} },
+                    {% endfor %}
+                ]
+            }]
+        };
+        $("#chartContainer").CanvasJSChart(options);
+
+        function toogleDataSeries(e){
+            if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                e.dataSeries.visible = false;
+            } else{
+                e.dataSeries.visible = true;
+            }
+            e.chart.render();
+        }
+
+        }
+    </script>
+
+</head>
+<body>
+
+<br>
+<h1 align="center" style="font-size:300%;">Misurazione</h1>
+<br>
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+{% for coso in registrazioni %}
+<h1>{{coso.valore}}</h1>
+{%endfor%}
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+</body>
+</html>
