@@ -1,6 +1,6 @@
-import pymysql
 import serial
-import time
+import db
+import datetime
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -17,8 +17,6 @@ serial_port.flushOutput()
 scheduler = BackgroundScheduler()
 scheduler.start()
 
-results = list()
-
 
 def read_temperature():
     print("Reading temperatures...")
@@ -31,11 +29,12 @@ def calc_special_avg(l: list):
 
 
 def job():
+    session = db.Session()
     readings = list()
     for reading in range(0, 20):
         readings.append(read_temperature())
     average = calc_special_avg(readings)
-    results.append(average)
+    session.add(db.Registrazione(orario=datetime.datetime.now(), valore=average))
 
 
 scheduler.add_job(job, CronTrigger(second=0))
