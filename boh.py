@@ -4,7 +4,7 @@ import time
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.schedulers.background import BackgroundScheduler
 
-device = "/dev/ttyAMA0"
+device = "/dev/serial1"
 baud_rate = 9600
 
 serial_port = serial.Serial(device, baud_rate, timeout=None)
@@ -36,6 +36,7 @@ def job():
         readings.append(read_temperature())
     average = calc_special_avg(readings)
     results.append(average)
+
 
 scheduler.add_job(job, CronTrigger(second=0))
 input("Waiting...")
