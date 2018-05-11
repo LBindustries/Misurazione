@@ -1,8 +1,8 @@
 {% extends "stampo.htm" %}
 {% block title %}Dashboard - Misurazione{% endblock %}
 {% block extrahead %}
-    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-    <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
     <script>
         window.onload = function () {
         var options = {
@@ -45,7 +45,7 @@
                 yValueFormatString: "#,##0°C",
                 dataPoints: [
                     {% for registrazione in registrazioni %}
-                        { x: new Date({{ registrazione.orario.year }}, {{ registrazione.orario.month }}, {{ registrazione.orario.day }}, {{ registrazione.orario.hour }}, {{ registrazione.orario.minute }}, {{ registrazione.orario.second }}), y: {{ registrazione.valore }} },
+                        { x: new Date({{ registrazione.orario.year }}, {{ registrazione.orario.month-1 }}, {{ registrazione.orario.day }}, {{ registrazione.orario.hour }}, {{ registrazione.orario.minute }}, {{ registrazione.orario.second }}), y: {{ registrazione.valore }} },
                     {% endfor %}
                 ]
             }]
@@ -67,28 +67,44 @@
 {% endblock %}
 {% block content %}
 <div class="card text-center">
-  <div class="card-header">
-    <ul class="nav nav-tabs card-header-tabs">
-      <li class="nav-item">
-        <a class="nav-link active" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="true" aria-controls="multiCollapseExample1">Grafico</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" data-toggle="collapse" href="#multiCollapseExample2" role="button" aria-expanded="false" aria-controls="multiCollapseExample2">CSV</a>
-      </li>
-    </ul>
-  </div>
-  <div class="card-body">
-    <div class="collapse multi-collapse show" id="multiCollapseExample1" style="height: 300px; width: 100%;" aria-expanded="true">
-      <div class="card card-body" style="height: 300px; width: 100%;">
-        <div id="chartContainer"style="height: 300px; width: 100%;"></div>
-      </div>
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="collapse" href="#multiCollapseExample1" role="button"
+                   aria-expanded="true" aria-controls="multiCollapseExample1">Grafico</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" data-toggle="collapse" href="#multiCollapseExample2" role="button"
+                   aria-expanded="false" aria-controls="multiCollapseExample2">CSV</a>
+            </li>
+        </ul>
     </div>
-  </div>
+    <div class="card-body">
+        <div class="collapse multi-collapse show" id="multiCollapseExample1" style="height: 300px; width: 100%;"
+             aria-expanded="true">
+            <div class="card card-body" style="height: 300px; width: 100%;">
+                <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+            </div>
+        </div>
+    </div>
     <div class="collapse multi-collapse" id="multiCollapseExample2">
-      <div class="card card-body">
-        Metti altra roba qui
-      </div>
+        <div class="card card-body">
+            <h1>Download del CSV</h1>
+            <form action="/downloadCSV" method="POST">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="data1" class="col-form-label">Data d'inizo</label>
+                        <input type="date" class="form-control" id="data1" name="data1">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="data2" class="col-form-label">Data d'inizo</label>
+                        <input type="date" class="form-control" id="data2" name="data2">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Esegui</button>
+            </form>
+        </div>
     </div>
-  </div>
+</div>
 </div>
 {%endblock%}
