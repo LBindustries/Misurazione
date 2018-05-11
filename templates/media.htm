@@ -1,0 +1,11 @@
+{% extends "stampo.htm" %}
+{% block title %}Risultato della Media{% endblock %}
+{% block content %}
+<div class="card text-white bg-{% if media < 5 %}info{% elif media < 25 %}success{%else%}danger{%endif%} mb-12">
+  <div class="card-header">Risultato della Media</div>
+  <div class="card-body">
+    <h5 class="card-title">{% if media < 5 %}Brrr!{% elif media < 25 %}Si sta bene!{%else%}Argh!{%endif%}</h5>
+    <p class="card-text">La temperatura media nel periodo selezionato è di {{media}}°C.</p>
+  </div>
+</div>
+{%endblock%}

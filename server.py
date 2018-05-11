@@ -33,7 +33,6 @@ def page_downloadCSV():
     margine2 = createDateTime(request.form["data2"])
     risultati = session.query(db.Registrazione).filter(db.and_(
         db.Registrazione.orario >= margine1, db.Registrazione.orario <= margine2)).all()
-    print(risultati)
     session.close()
     csv = open("risultato.csv", mode="w")
     csv.write("VALORE;DATA\n")
@@ -45,6 +44,22 @@ def page_downloadCSV():
               mimetype='text/csv',
               attachment_filename='risultato.csv',
               as_attachment=True)
+
+
+@app.route("/average", methods=["POST"])
+def page_average():
+    session = db.Session()
+    margine1 = createDateTime(request.form["data1"])
+    margine2 = createDateTime(request.form["data2"])
+    risultati = session.query(db.Registrazione).filter(db.and_(
+        db.Registrazione.orario >= margine1, db.Registrazione.orario <= margine2)).all()
+    session.close()
+    media = 0.0
+    divisori = len(risultati)
+    for risultato in risultati:
+        media += risultato.valore
+    media = media/divisori
+    return render_template("media.htm", media=media)
 
 
 @app.route("/misufake")
