@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!— Required meta tags —>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
-          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+{% extends "stampo.htm" %}
+{% block title %}Dashboard - Misurazione{% endblock %}
+{% block extrahead %}
+    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
     <script>
         window.onload = function () {
         var options = {
@@ -58,6 +53,7 @@
         $("#chartContainer").CanvasJSChart(options);
 
         function toogleDataSeries(e){
+            e.style.width = "300px";
             if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
                 e.dataSeries.visible = false;
             } else{
@@ -68,18 +64,31 @@
 
         }
     </script>
-
-</head>
-<body>
-
-<br>
-<h1 align="center" style="font-size:300%;">Misurazione</h1>
-<br>
-<div id="chartContainer" style="height: 300px; width: 100%;"></div>
-{% for coso in registrazioni %}
-<h1>{{coso.valore}}</h1>
-{%endfor%}
-<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
-</body>
-</html>
+{% endblock %}
+{% block content %}
+<div class="card text-center">
+  <div class="card-header">
+    <ul class="nav nav-tabs card-header-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="true" aria-controls="multiCollapseExample1">Grafico</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" data-toggle="collapse" href="#multiCollapseExample2" role="button" aria-expanded="false" aria-controls="multiCollapseExample2">CSV</a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body">
+    <div class="collapse multi-collapse show" id="multiCollapseExample1" style="height: 300px; width: 100%;" aria-expanded="true">
+      <div class="card card-body" style="height: 300px; width: 100%;">
+        <div id="chartContainer"style="height: 300px; width: 100%;"></div>
+      </div>
+    </div>
+  </div>
+    <div class="collapse multi-collapse" id="multiCollapseExample2">
+      <div class="card card-body">
+        Metti altra roba qui
+      </div>
+    </div>
+  </div>
+</div>
+{%endblock%}
