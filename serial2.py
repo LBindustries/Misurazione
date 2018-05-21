@@ -20,19 +20,13 @@ scheduler.start()
 
 
 def read_temperature():
-    print("Reading temperatures...")
     serial_port.write(str.encode("getq"))
-    return serial_port.read()
+    return int.from_bytes(serial_port.read(), byteorder="big", signed=False)
 
 
 def calc_special_avg(l: list):
     f = sorted(l)[5:15]
-    fagiano = []
-    for tumore in f:
-        tumore = int.from_bytes(tumore, byteorder='big', signed=False)
-        fagiano.append(tumore)
-    print(fagiano)
-    return sum(fagiano) / len(f)
+    return sum(f) / len(f)
 
 
 def job():
@@ -40,11 +34,8 @@ def job():
     readings = list()
     for reading in range(0, 20):
         readings.append(read_temperature())
-        print(readings)
     average = calc_special_avg(readings)
-    print(average)
     session.add(db.Registrazione(orario=datetime.datetime.now(), valore=average))
-    print("Misurazione riuscita. In attesa...")
 
 
 scheduler.add_job(job, CronTrigger(second=0))
