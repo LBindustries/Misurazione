@@ -23,7 +23,7 @@ class Registrazione(Base):
 
     def c(self):
         print("c() is not yet implemented, using value")
-        return self.value
+        return self.valore
 
 
 Base.metadata.create_all()
