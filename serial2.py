@@ -39,5 +39,3 @@ def job():
 
 
 scheduler.add_job(job, CronTrigger(second=0))
-input("Waiting...")
-

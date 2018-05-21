@@ -21,5 +21,9 @@ class Registrazione(Base):
                                                             self.orario.minute,
                                                             self.valore)
 
+    def c(self):
+        print("c() is not yet implemented, using value")
+        return self.value
+
 
 Base.metadata.create_all()

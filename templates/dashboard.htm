@@ -45,7 +45,7 @@
                 yValueFormatString: "#,##0°C",
                 dataPoints: [
                     {% for registrazione in registrazioni %}
-                        { x: new Date({{ registrazione.orario.year }}, {{ registrazione.orario.month-1 }}, {{ registrazione.orario.day }}, {{ registrazione.orario.hour }}, {{ registrazione.orario.minute }}, {{ registrazione.orario.second }}), y: {{ registrazione.valore }} },
+                        { x: new Date({{ registrazione.orario.year }}, {{ registrazione.orario.month-1 }}, {{ registrazione.orario.day }}, {{ registrazione.orario.hour }}, {{ registrazione.orario.minute }}, {{ registrazione.orario.second }}), y: {{ registrazione.c() }} },
                     {% endfor %}
                 ]
             }]
