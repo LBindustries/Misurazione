@@ -22,14 +22,12 @@ scheduler.start()
 def read_temperature():
     print("Reading temperatures...")
     serial_port.write(str.encode("getq"))
-    return serial_port.read()
+    return int(str(serial_port.read(), encoding="utf8"))
 
 
 def calc_special_avg(l: list):
     f = sorted(l)[5:15]
-    print(f) 
-    ris = struct.unpack(">BL", f)
-    return sum(ris) / len(f)
+    return sum(f) / len(f)
 
 
 def job():
@@ -39,6 +37,7 @@ def job():
         readings.append(read_temperature())
     average = calc_special_avg(readings)
     session.add(db.Registrazione(orario=datetime.datetime.now(), valore=average))
+    session.commit()
 
 
 scheduler.add_job(job, CronTrigger(second=0))
