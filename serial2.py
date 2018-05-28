@@ -16,12 +16,12 @@ serial_port.flushInput()
 serial_port.flushOutput()
 
 scheduler = BackgroundScheduler()
-scheduler.start()
 
 
 def read_temperature():
-    serial_port.write(str.encode("getq"))
-    return int.from_bytes(serial_port.read(), byteorder="big", signed=False)
+    serial_port.write(b"getq")
+    print("In lettura...")
+    return int(str(serial_port.read(), encoding="utf8"))
 
 
 def calc_special_avg(l: list):
@@ -31,11 +31,22 @@ def calc_special_avg(l: list):
 
 def job():
     session = db.Session()
+    print("a")
     readings = list()
     for reading in range(0, 20):
-        readings.append(read_temperature())
+        print("b")
+        lettura=read_temperature()
+        print(lettura)
+        readings.append(lettura)
     average = calc_special_avg(readings)
+    print(average)
     session.add(db.Registrazione(orario=datetime.datetime.now(), valore=average))
-
+    session.commit()
 
 scheduler.add_job(job, CronTrigger(second=0))
+scheduler.start()
+try:
+    while True:
+        pass
+except:
+    scheduler.stop()
