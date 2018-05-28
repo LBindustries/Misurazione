@@ -1,8 +1,7 @@
 #define TEMPSENSOR 0
-
 int sensor_pin = TEMPSENSOR;
 long int sensor_value;
-string input;
+String input = "";
 bool input_complete;
 
 void setup() {
@@ -19,13 +18,29 @@ void setup() {
 void loop() {
     //Repeatedly called after setup
     if (input_complete) {
-        if (input == "get\n")
+        if (input == "getq")
         {
             sensor_value = analogRead(sensor_pin);
-            Serial.print(sensor_value);
+            char array[4];
+            itoa(sensor_value, array, 10);
+            int iterator = 0;
+            while(iterator < 4 && array[iterator] != '\0')
+            {
+                Serial.print(array[iterator]);
+                iterator++;
+            }
+            input = "";
+            input_complete = false;
         }
-        input = "";
-        input_complete = false;
+    }
+    sensor_value = analogRead(sensor_pin);
+    char array2[4];
+    itoa(sensor_value, array2, 10);
+    int iteratore = 0;
+    while(iteratore < 4 && array2[iteratore] != '\0')
+    {
+        Serial.print(array2[iteratore]);
+        iteratore++;
     }
 }
 
@@ -39,7 +54,7 @@ void serialEvent() {
     while (Serial.available()) {
         char in = (char) Serial.read();
         input += in;
-        if (in == '\n')
+        if (in == 'q')
         {
             input_complete = true;
         }
