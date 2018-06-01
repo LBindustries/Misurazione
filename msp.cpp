@@ -18,6 +18,7 @@ void setup() {
 void loop() {
     //Repeatedly called after setup
     if (input_complete) {
+        input_complete = false;
         if (input == "getq")
         {
             sensor_value = analogRead(sensor_pin);
@@ -41,7 +42,6 @@ void loop() {
                 i++;
             }
             input = "";
-            input_complete = false;
         }
     }
 }
