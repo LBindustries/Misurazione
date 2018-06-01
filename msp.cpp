@@ -23,24 +23,26 @@ void loop() {
             sensor_value = analogRead(sensor_pin);
             char array[4];
             itoa(sensor_value, array, 10);
-            int iterator = 0;
-            while(iterator < 4 && array[iterator] != '\0')
+            //Padding
+            int i = 0;
+            while(i < 4 && array[i] != '\0')
             {
-                Serial.print(array[iterator]);
-                iterator++;
+                i++;
+            }
+            while(i < 4) {
+                Serial.print('0');
+                i++;
+            }
+            //Value
+            i = 0;
+            while(i < 4 && array[i] != '\0')
+            {
+                Serial.print(array[i]);
+                i++;
             }
             input = "";
             input_complete = false;
         }
-    }
-    sensor_value = analogRead(sensor_pin);
-    char array2[4];
-    itoa(sensor_value, array2, 10);
-    int iteratore = 0;
-    while(iteratore < 4 && array2[iteratore] != '\0')
-    {
-        Serial.print(array2[iteratore]);
-        iteratore++;
     }
 }
 
