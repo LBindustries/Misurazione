@@ -1,4 +1,3 @@
-#define TEMPSENSOR 0
 int sensor_pin = TEMPSENSOR;
 long int sensor_value;
 String input = "";
