@@ -19,7 +19,7 @@ scheduler = BackgroundScheduler()
 
 
 def read_temperature():
-    serial_port.write(b"getq")
+    serial_port.write(b"get\n")
     print("In lettura...")
     return int(str(serial_port.read(), encoding="utf8"))
 

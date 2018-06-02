@@ -18,9 +18,8 @@ scheduler = BlockingScheduler()
 
 
 def read_temperature():
-    serial_port.write(b"getq")
-    print("In lettura...")
-    print(str(serial_port.read(5).strip(), encoding="utf-8"))
+    print("Lettura in corso...")
+    serial_port.write(b"get\n")
     return int(str(serial_port.read(5).strip(), encoding="utf-8"))
 
 
@@ -30,25 +29,25 @@ def calc_special_avg(l: list):
 
 
 def job():
+    print("Job avviato.")
     session = db.Session()
-    print("a")
     readings = list()
     for reading in range(0, 20):
-        print("b")
-        lettura=read_temperature()
-        print(lettura)
+        lettura = read_temperature()
         readings.append(lettura)
+    print("Calcolo...")
     average = calc_special_avg(readings)
-    print(average)
+    print("Aggiunta al database...")
     session.add(db.Registrazione(orario=datetime.datetime.now(), valore=average))
     session.commit()
-    print("Successo")
     session.close()
 
-scheduler.add_job(job,'interval', minutes=1)
+
+scheduler.add_job(job, 'interval', minutes=1)
 scheduler.start()
-print("Schedulatore avviato")
+print("Scheduler avviato.")
 try:
+    # Bad idea, però non mi attento a toglierlo
     while True:
         pass
 except:
