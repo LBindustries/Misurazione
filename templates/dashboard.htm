@@ -45,7 +45,7 @@
                 yValueFormatString: "#,##0°C",
                 dataPoints: [
                     {% for registrazione in registrazioni %}
-                        { x: new Date({{ registrazione.orario.year }}, {{ registrazione.orario.month-1 }}, {{ registrazione.orario.day }}, {{ registrazione.orario.hour }}, {{ registrazione.orario.minute }}, {{ registrazione.orario.second }}), y: {{ registrazione.c() }} },
+                        { x: new Date({{ registrazione.orario.year }}, {{ registrazione.orario.month-1 }}, {{ registrazione.orario.day }}, {{ registrazione.orario.hour }}, {{ registrazione.orario.minute }}, {{ registrazione.orario.second }}), y: {{ registrazione.valore*0.01241}} },
                     {% endfor %}
                 ]
             }]
@@ -53,7 +53,7 @@
         $("#chartContainer").CanvasJSChart(options);
 
         function toogleDataSeries(e){
-            e.style.width = "300px";
+            e.style.width = "600px";
             if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
                 e.dataSeries.visible = false;
             } else{
@@ -86,8 +86,24 @@
     <div class="card-body">
         <div class="collapse multi-collapse show" id="multiCollapseExample1" style="height: 300px; width: 100%;"
              aria-expanded="true">
-            <div class="card card-body" style="height: 300px; width: 100%;">
+            <div class="card card-body" style="height: 600px; width: 100%;">
                 <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+             <form action="/ricerca" method="POST">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="data5" class="col-form-label">Data d'inizo</label>
+                        <input type="date" class="form-control" id="data5" name="data5">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="data6" class="col-form-label">Data di fine</label>
+                        <input type="date" class="form-control" id="data6" name="data6">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Esegui</button>
+            </form>
+                {% if alternativa%}
+                <a href="/misurazione" class="btn btn-primary btn-block">Torna alla visuale iniziale</a>
+                {%endif%}
             </div>
         </div>
     </div>
@@ -101,7 +117,7 @@
                         <input type="date" class="form-control" id="data1" name="data1">
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="data2" class="col-form-label">Data d'inizo</label>
+                        <label for="data2" class="col-form-label">Data di fine</label>
                         <input type="date" class="form-control" id="data2" name="data2">
                     </div>
                 </div>
@@ -111,7 +127,7 @@
     </div>
     <div class="collapse multi-collapse" id="multiCollapseExample3">
         <div class="card card-body">
-            <h1>Download del CSV</h1>
+            <h1>Calcolo temperatura media</h1>
             <form action="/average" method="POST">
                 <div class="form-row">
                     <div class="form-group col-md-6">
@@ -119,7 +135,7 @@
                         <input type="date" class="form-control" id="data3" name="data1">
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="data4" class="col-form-label">Data d'inizo</label>
+                        <label for="data4" class="col-form-label">Data di fine</label>
                         <input type="date" class="form-control" id="data4" name="data2">
                     </div>
                 </div>
