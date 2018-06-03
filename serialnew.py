@@ -1,7 +1,6 @@
 import serial
 import db
 import datetime
-import struct
 from apscheduler.schedulers.blocking import BlockingScheduler
 
 device = "/dev/ttyACM1"
@@ -20,7 +19,13 @@ scheduler = BlockingScheduler()
 def read_temperature():
     print("Lettura in corso...")
     serial_port.write(b"get\n")
-    return int(str(serial_port.read(5).strip(), encoding="utf-8"))
+    serial_string = ""
+    while "\n" not in serial_string:
+        byte = serial_port.read(1)
+        string = str(byte, encoding="ascii")
+        serial_string += string
+    serial_strnumb = serial_string.replace("\n", "")
+    return int(serial_strnumb)
 
 
 def calc_special_avg(l: list):
@@ -44,11 +49,9 @@ def job():
 
 
 scheduler.add_job(job, 'interval', minutes=1)
-scheduler.start()
-print("Scheduler avviato.")
+print("Avvio dello scheduler...")
 try:
-    # Bad idea, però non mi attento a toglierlo
-    while True:
-        pass
-except:
-    scheduler.stop()
+    scheduler.start()
+except KeyboardInterrupt:
+    print("Chiusura del programma...")
+
